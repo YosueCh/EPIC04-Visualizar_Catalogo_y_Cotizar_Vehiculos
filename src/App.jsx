@@ -37,6 +37,7 @@ import Index from './pages/Index';
 import NotFound from './pages/error/Not_Found';
 // Rutas para Dashboard
 import Home from './pages/dashboard/Home';
+import Contacto_Dash from './pages/dashboard/Contacto-Dash';
 // Rutas para Auth
 import Login from './pages/auth/Login/Login';
 import Register from './pages/auth/Register/Register';
@@ -73,12 +74,17 @@ function App() {
             <Route path="/ayuda" element={<Ayuda />} />
           </Route>
 
-          <Route element={<ProtectedRoute requireAdmin />}>
+          <Route path="/admin" element={<LayoutAdmin />}>
+            <Route index element={<Home />} />
+            <Route path="home" element={<Home />} />
+            <Route path="contacto" element={<Contacto_Dash />} />
+          </Route>
+          {/* <Route element={<ProtectedRoute requireAdmin />}>
             <Route path="/admin" element={<LayoutAdmin />}>
               <Route index element={<Home />} />
               <Route path="home" element={<Home />} />
             </Route>
-          </Route>
+          </Route> */}
 
           <Route path="*" element={<NotFound />} />
         </Routes>
