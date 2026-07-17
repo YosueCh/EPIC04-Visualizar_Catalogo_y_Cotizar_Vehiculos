@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { 
+  getServicios, 
+  registrarServicio, 
+  modificarServicio, 
+  borrarServicio 
+} from '../../services/servicios';
 import './CRUD_Servicios.css';
 
 export default function CRUD_Servicios() {
-  const API_URL = "http://localhost:8082/api/public/servicios";
-
   const [servicios, setServicios] = useState([]);
   const [form, setForm] = useState({ id: '', nombre: '', descripcion: '', precioBase: '', imagenUrl: '' });
   const [editando, setEditando] = useState(false);
 
+  // Carga inicial
   const cargarServicios = async () => {
     try {
-      const res = await fetch(API_URL);
-      const data = await res.json();
+      const data = await getServicios();
       setServicios(data);
     } catch (error) {
       console.error("Error al cargar los servicios:", error);
@@ -28,6 +32,7 @@ export default function CRUD_Servicios() {
     setForm({ ...form, [name]: value });
   };
 
+  // Enviar formulario (Crear o Editar)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -41,41 +46,41 @@ export default function CRUD_Servicios() {
       return;
     }
 
-    const metodo = editando ? "PUT" : "POST";
-    const url = editando ? `${API_URL}/${form.id}` : API_URL;
+    const payload = {
+      nombre: form.nombre,
+      descripcion: form.descripcion,
+      precioBase: parseFloat(form.precioBase),
+      imagenUrl: form.imagenUrl
+    };
 
     try {
-      const res = await fetch(url, {
-        method: metodo,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nombre: form.nombre,
-          descripcion: form.descripcion,
-          precioBase: form.precioBase,
-          imagenUrl: form.imagenUrl
-        })
+      if (editando) {
+        // Usa la función de actualizar con Axios
+        await modificarServicio(form.id, payload);
+      } else {
+        // Usa la función de registrar con Axios
+        await registrarServicio(payload);
+      }
+
+      Swal.fire({
+        icon: 'success',
+        title: editando ? '¡Actualizado!' : '¡Creado!',
+        text: editando ? 'El servicio se ha actualizado con éxito.' : 'El servicio se ha registrado con éxito.',
+        confirmButtonColor: '#0d6efd',
+        timer: 2000
       });
 
-      if (res.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: editando ? '¡Actualizado!' : '¡Creado!',
-          text: editando ? 'El servicio se ha actualizado con éxito.' : 'El servicio se ha registrado con éxito.',
-          confirmButtonColor: '#0d6efd',
-          timer: 2000
-        });
-        limpiarFormulario();
-        cargarServicios();
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Ocurrió un problema en el servidor al procesar la solicitud.',
-          confirmButtonColor: '#dc3545'
-        });
-      }
+      limpiarFormulario();
+      cargarServicios();
+
     } catch (error) {
-      console.error("Error al procesar el formulario:", error);
+      console.error("Error al procesar el formulario con Axios:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de Autenticación / Red',
+        text: 'No tienes permisos o el Gateway rechazó la solicitud.',
+        confirmButtonColor: '#dc3545'
+      });
     }
   };
 
@@ -90,6 +95,7 @@ export default function CRUD_Servicios() {
     });
   };
 
+  // Eliminar servicio con confirmación
   const handleEliminar = async (id) => {
     Swal.fire({
       title: '¿Estás seguro?',
@@ -103,20 +109,28 @@ export default function CRUD_Servicios() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-          if (res.ok) {
-            Swal.fire({
-              title: '¡Eliminado!',
-              text: 'El servicio ha sido removido.',
-              icon: 'success',
-              timer: 1500,
-              showConfirmButton: false
-            });
-            cargarServicios();
-            if (form.id === id) limpiarFormulario();
-          }
+          // Usa la función de borrar con Axios
+          await borrarServicio(id);
+          
+          Swal.fire({
+            title: '¡Eliminado!',
+            text: 'El servicio ha sido removido.',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+          });
+
+          cargarServicios();
+          if (form.id === id) limpiarFormulario();
+          
         } catch (error) {
-          console.error("Error al eliminar servicio:", error);
+          console.error("Error al eliminar servicio con Axios:", error);
+          Swal.fire({
+            icon: 'error',
+            title: 'No autorizado',
+            text: 'Tu sesión expiró o no cuentas con rol de administrador.',
+            confirmButtonColor: '#dc3545'
+          });
         }
       }
     });
@@ -132,6 +146,7 @@ export default function CRUD_Servicios() {
       <h1 className="text-black mb-4 fw-bold">Gestión de Servicios Automotrices</h1>
 
       <div className="row g-4">
+        {/* COLUMNA 1: FORMULARIO */}
         <div className="col-12 col-lg-4">
           <div className="card bg-white border-light shadow rounded-3 overflow-hidden">
             <div className={`card-header py-3 ${editando ? 'bg-warning text-dark' : 'bg-primary text-white'}`}>
@@ -205,7 +220,7 @@ export default function CRUD_Servicios() {
           </div>
         </div>
 
-        {/* COLUMNA 2: TABLA OSCURA DE REGISTROS */}
+        {/* COLUMNA 2: TABLA OSCURA */}
         <div className="col-12 col-lg-8">
           <div className="card bg-black border-dark shadow-lg rounded-3 text-white p-4 bg-dark-card">
             <h5 className="fw-bold mb-3 text-white-50">

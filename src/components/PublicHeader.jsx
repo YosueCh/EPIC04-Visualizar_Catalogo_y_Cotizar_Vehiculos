@@ -85,10 +85,29 @@ export default function PublicHeader() {
                 </ul>
               </li>
 
-              <li className="nav-item">
-                <Link className={`nav-link ${isActive('/contacto')}`} to="/contacto">
-                  Contacto
-                </Link>
+{/* Dentro de contacto quiero que se pueda agendar el servicio quiero el menu desplegable */}
+              <li className="nav-item dropdown">
+                <a 
+                  className="nav-link dropdown-toggle" 
+                  href="#" 
+                  role="button" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false"
+                >
+                  Contactanos
+                </a>
+                <ul className="dropdown-menu dropdown-menu-dark bg-dark border-secondary shadow">
+                  <li>
+                    <Link className="dropdown-item" to="/servicios-contacto">
+                      Agendar Servicio
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/contacto">
+                      Contacto General
+                    </Link>
+                  </li>
+                </ul>
               </li>
 
               <li className="nav-item dropdown">

@@ -2,18 +2,19 @@ import { useNavigate } from 'react-router-dom';
 import './ServicioCard.css';
 
 export default function ServicioCard({ servicio }) {
-  const { nombre, descripcion, precioBase, imagenUrl } = servicio;
+  // Extraemos también el 'id' del objeto servicio
+  const { id, nombre, descripcion, precioBase, imagenUrl } = servicio;
   const navigate = useNavigate();
 
   const handleCotizar = () => {
-    // Redirige a la página de contacto enviando el nombre del servicio seleccionado
-    navigate('/contacto', { state: { servicioSeleccionado: nombre } });
+    // Redirige enviando el servicioId a través del state
+    navigate('/servicios-contacto', { state: { servicioId: id } });
   };
 
   return (
     <div className="card bg-black border-dark h-100 shadow-lg overflow-hidden rounded-3 servicio-card">
       
-      {/* Imagen del servicio (Igual que en VehicleCard) */}
+      {/* Imagen del servicio */}
       <img
         src={imagenUrl || 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80'}
         className="card-img-top"

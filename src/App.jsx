@@ -38,6 +38,9 @@ import NotFound from './pages/error/Not_Found';
 // Rutas para Dashboard
 import Home from './pages/dashboard/Home';
 import Crud_Servicios from './pages/dashboard/Crud_Servicios';
+import ServiciosContacto from './pages/Contacto/ServiciosContacto';
+import Citas_Servicios from './pages/dashboard/Citas_Servicios';
+
 // Rutas para Auth
 import Login from './pages/auth/Login/Login';
 import Register from './pages/auth/Register/Register';
@@ -74,19 +77,17 @@ function App() {
             <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
             <Route path="/ayuda" element={<Ayuda />} />
             <Route path="/servicios" element={<Servicios />} />
+            <Route path="/servicios-contacto" element={<ServiciosContacto />} />
           </Route>
 
-          <Route path="/admin" element={<LayoutAdmin />}>
-            <Route index element={<Home />} />
-            <Route path="home" element={<Home />} />
-            <Route path="crud_servicios" element={<Crud_Servicios />} />
-          </Route>
-          {/* <Route element={<ProtectedRoute requireAdmin />}>
+          <Route element={<ProtectedRoute requireAdmin />}>
             <Route path="/admin" element={<LayoutAdmin />}>
               <Route index element={<Home />} />
               <Route path="home" element={<Home />} />
+              <Route path="crud-servicios" element={<Crud_Servicios />} />
+              <Route path="citas-servicios" element={<Citas_Servicios />} />
             </Route>
-          </Route> */}
+          </Route>
 
           <Route path="*" element={<NotFound />} />
         </Routes>
