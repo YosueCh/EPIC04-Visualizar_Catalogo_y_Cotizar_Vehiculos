@@ -37,6 +37,7 @@ import Index from './pages/Index';
 import NotFound from './pages/error/Not_Found';
 // Rutas para Dashboard
 import Home from './pages/dashboard/Home';
+import Contacto_Dash from './pages/dashboard/Contacto-Dash';
 import Crud_Servicios from './pages/dashboard/Crud_Servicios';
 import ServiciosContacto from './pages/Contacto/ServiciosContacto';
 import Citas_Servicios from './pages/dashboard/Citas_Servicios';
@@ -93,6 +94,7 @@ function App() {
               <Route path="marketing" element={<MarketingDashboard />} />
                 <Route path="crud-servicios" element={<Crud_Servicios />} />
                 <Route path="citas-servicios" element={<Citas_Servicios />} />
+                <Route path="contacto" element={<Contacto_Dash />} />
             </Route>
           </Route>
 
