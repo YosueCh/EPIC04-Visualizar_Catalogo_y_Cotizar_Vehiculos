@@ -21,6 +21,7 @@ const Sidebar = () => {
           { to: '/admin/citas-servicios', icon: 'bi-calendar-event', label: 'Citas y Servicios' },
           { to: '/admin/marketing', icon: 'bi-megaphone', label: 'Marketing' },
           { to: '/admin/cotizaciones', icon: 'bi-file-earmark-text', label: 'Cotizaciones' },
+          { to: '/admin/contacto', icon: 'bi-telephone', label: 'Contacto' },
         ].map((item, index) => (
           <li className="nav-item mb-1" key={index}>
             <Link

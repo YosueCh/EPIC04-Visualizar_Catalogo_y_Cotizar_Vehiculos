@@ -37,6 +37,7 @@ import Index from './pages/Index';
 import NotFound from './pages/error/Not_Found';
 // Rutas para Dashboard
 import Home from './pages/dashboard/Home';
+import Contacto_Dash from './pages/dashboard/Contacto-Dash';
 import Crud_Servicios from './pages/dashboard/Crud_Servicios';
 import ServiciosContacto from './pages/Contacto/ServiciosContacto';
 import Citas_Servicios from './pages/dashboard/Citas_Servicios';
@@ -60,6 +61,7 @@ import MarcaDetalle from './pages/MarcaDetalle/MarcaDetalle';
 import PreguntasFrecuentes from './pages/PreguntasFrecuentes/PreguntasFrecuentes';
 import Ayuda from './pages/Ayuda/Ayuda';
 import Servicios from './pages/Servicios/Servicios';
+import MarketingDashboard from './pages/dashboard/MarketingDashboard';
 
 function App() {
 
@@ -87,9 +89,11 @@ function App() {
             <Route path="/admin" element={<LayoutAdmin />}>
               <Route index element={<Home />} />
               <Route path="home" element={<Home />} />
+              <Route path="marketing" element={<MarketingDashboard />} />
               <Route path="crud-servicios" element={<Crud_Servicios />} />
               <Route path="citas-servicios" element={<Citas_Servicios />} />
               <Route path="cotizaciones" element={<Cotizaciones_Vehiculos />} />
+              <Route path="contacto" element={<Contacto_Dash />} />
             </Route>
           </Route>
 
